@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <title>Password Strengths Meter using AngularJS</title>
+    <style>
+        #myPWInput.ng-invalid {
+            border:1px solid red;
+        }
+        #myPWInput.ng-valid {
+            border:1px solid green;
+        }
+        #myPWInput.ng-valid-numbers ~ #numbers, #myPWInput.ng-valid-min-char ~ #minChar, #myPWInput.ng-valid-cap-letters ~ #capLetters {
+            background-color: lightgreen;
+        }
+    </style>
+</head>
+<body ng-app="myApp">    
+    <form id="form" name="myForm">
+        <input id="myPWInput" type="" name="myPassword" ng-model="test" required min-eight-char capital-letters numbers>
+        <p>
+            Your Password Must Contain at least:
+            <p id="minChar">8 characters</p>
+            <p id="capLetters">one Capital Letter</p>
+            <p id="numbers">one Number</p>
+        </p>
+    </form>
+</body>
+<script>
+    let app = angular.module('myApp', [])
+    app.directive('minEightChar', () => {
+        return {
+            require: 'ngModel',
+            link: (scope, element, attr, mCtrl) => {
+                myValidation = x => {
+                    if (x.length >= 8) {
+                        mCtrl.$setValidity('minChar', true)
+                    }else {
+                        mCtrl.$setValidity('minChar', false)
+                    }
+                    return x;
+                }
+                mCtrl.$parsers.push(myValidation)
+            }
+        }
+    })
+    app.directive('capitalLetters', () => {
+        return {
+            require: 'ngModel',
+            link: (scope, element, attr, mCtrl) => {
+                myValidation = x => {
+                    mCtrl.$setValidity('capLetters', /[A-Z]/.test(x))
+                    return x;
+                }
+                mCtrl.$parsers.push(myValidation)
+            }
+        }
+    })
+    app.directive('numbers', () => {
+        return {
+            require: 'ngModel',
+            link: (scope, element, attr, mCtrl) => {
+                myValidation = x => {
+                    mCtrl.$setValidity('numbers', /\d/.test(x))
+                    return x;
+                }
+                mCtrl.$parsers.push(myValidation)
+            }
+        }
+    })
+</script>
+</html>
