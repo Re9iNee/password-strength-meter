@@ -1,0 +1,10 @@
+.inlineError svg {
+    transition: all .2s linear;
+}
+.inlineError svg.ng-hide {
+    /* margin-right: 12px; */
+    /* opacity: 0; */
+    transform: rotate(360deg);
+}
+
+
